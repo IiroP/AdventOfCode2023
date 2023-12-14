@@ -1,4 +1,5 @@
 import Common.readInput
+import java.awt.Polygon
 
 object Day10 extends App:
 
@@ -36,6 +37,14 @@ object Day10 extends App:
 			case 'F' => Vector(1, 2)
 			case _ => Vector()
 
+	/**
+	  * Returns the possible neighbor at specific direction
+	  *
+	  * @param x x-coordinate
+	  * @param y y-coordinate
+	  * @param dir direction
+	  * @return (x, y, char) inside option, None if in border
+	  */
 	private def neighborAt(x: Int, y: Int, dir: Int): Option[(Int, Int, Char)] =
 		if dir == 0 && y > 0 then
 			val y1 = y - 1
@@ -56,7 +65,14 @@ object Day10 extends App:
 		else
 			None
 		
-
+	/**
+	  * Checks whether there is pipe from coordinates to direction
+	  *
+	  * @param x x-coordinate
+	  * @param y y-coordinate
+	  * @param dir Direction
+	  * @return Boolean value
+	  */
 	def connected(x: Int, y: Int, dir: Int): Boolean =
 		val thisSymbol = input(y)(x)
 		val otherSymbol = neighborAt(x, y, dir)
@@ -64,6 +80,11 @@ object Day10 extends App:
 		val otherHas = otherSymbol.isDefined && (connections(otherSymbol.get._3).contains((dir + 2) % 4) || otherSymbol.get._3 == 'S')
 		thisHas && otherHas
 		
+	/**
+	  * Constructs loop
+	  *
+	  * @return Vector of coordinate pairs
+	  */
 	def constructLoop: Vector[(Int, Int)] =
 		val startY = input.indexWhere(_.contains('S'))
 		val startX = input(startY).indexOf('S')
@@ -84,8 +105,42 @@ object Day10 extends App:
 		
 		result.toVector
 
+	/**
+	  * Creates Polygon based on vector of line coordinates
+	  *
+	  * @param coords Vector of coordinates
+	  * @return Polygon
+	  */
+	def createPolygon(coords: Vector[(Int, Int)]): Polygon =
+		val (x, y) = coords.unzip
+		val n = coords.length - 1
+		Polygon(x.toArray, y.toArray, n)
+
+	/**
+	  * Counts points that are inside polygon
+	  *
+	  * @param polygon Polygon
+	  * @param loop Line coordinates
+	  * @return Count of (integer) points
+	  */
+	def countInsidePoints(polygon: Polygon, loop: Vector[(Int, Int)]): Int =
+		var count = 0
+		for
+			y <- 0 until rows
+			x <- 0 until cols
+		do
+			if !loop.contains(x, y) && polygon.contains(x, y) then
+				count += 1
+		count
+
 	def task1(): Int = 
 		val loop = constructLoop
 		(loop.length - 1) / 2
 
+	def task2(): Int =
+		val loop = constructLoop
+		val polygon = createPolygon(loop)
+		countInsidePoints(polygon, loop)
+
 	println(task1())
+	println(task2())
