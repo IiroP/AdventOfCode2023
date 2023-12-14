@@ -82,3 +82,13 @@ class TestSolutions extends AnyFlatSpec with Matchers:
 	"Day 10 part 2" should "be correct" in {
 		Day10.task2() shouldBe 491
 	}
+
+	"Day 11 part 1" should "be correct" in {
+		Day11.task1() shouldBe 9681886
+	}
+
+	"Day 11 part 2" should "be correct" in {
+		Day11.task2() shouldBe 791134099634L
+	}
+
+	
