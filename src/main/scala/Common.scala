@@ -34,3 +34,6 @@ object Common:
     
   def lcm(a: Long, b: Long): Long =
     (a * b) / gcd(a, b)
+
+  def distanceBetween(a: (Int, Int), b: (Int, Int)): Int =
+    math.sqrt(math.pow(a._1 - b._1, 2) + math.pow(a._2 - b._2, 2)).toInt
