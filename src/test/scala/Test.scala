@@ -192,8 +192,9 @@ class TestSolutions extends AnyFlatSpec with Matchers:
 		Day24.task1() shouldBe 11098
 	}
 
+	// Quite slow
 	"Day 24 part 2" should "be correct" in {
-		//Day24.task2() shouldBe 80948
+		Day24.task2() shouldBe 920630818300104L
 	}		
 	
 	"Day 25 part 1" should "be correct" in {
