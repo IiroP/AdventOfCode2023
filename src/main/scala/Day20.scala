@@ -223,7 +223,7 @@ object Day20 extends App:
 		if inputs.length == 1 then
 			inputs = inputs.head.inputs.map(modules)
 		
-		buttonCounter = 1000 //It seems you have to continue where you left off at task1
+		buttonCounter = 0
 		while inputs.exists(_.highCycles.size < 1) do
 			superButton.send(Frequency.Low)
 			buttonCounter += 1

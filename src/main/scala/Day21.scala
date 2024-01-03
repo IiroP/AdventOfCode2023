@@ -79,7 +79,7 @@ object Day21 extends App:
 
 	def task1(): Int =
 		visit(64)
-		visualize()
+		//visualize()
 		result.size
 
 	def task2(): Long =
