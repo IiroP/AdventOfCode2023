@@ -8,5 +8,6 @@ lazy val root = project
 
     scalaVersion := scala3Version,
 
-    libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.17" % "test"
+    libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.17" % "test",
+    libraryDependencies += "org.scalanlp" %% "breeze" % "2.1.0"
   )

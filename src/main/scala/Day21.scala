@@ -1,4 +1,6 @@
 import Common.readInput
+import breeze.linalg.{DenseMatrix, DenseVector}
+import breeze.linalg.operators.*
 
 object Day21 extends App:
 	val input = readInput(21)
@@ -39,6 +41,9 @@ object Day21 extends App:
 	  * @param steps
 	  */
 	def visit(steps: Int) =
+		result.clear()
+		handled.clear()
+		queue.clear()
 		val startY = input.indexWhere(_.contains('S'))
 		val startX = input(startY).indexOf('S')
 		queue.enqueue(((startX, startY), steps))
@@ -63,9 +68,9 @@ object Day21 extends App:
 	  * @param left
 	  * @param right
 	  */
-	def visualize(top: Int = 0, bottom: Int = rows - 1, left: Int = 0, right: Int = cols - 1) =
-		for y <- top to bottom do
-			for x <- left to right do
+	def visualize(top: Int = 0, bottom: Int = 0, left: Int = 0, right: Int = 0) =
+		for y <- (0 - top) to (rows - 1 + bottom) do
+			for x <- (0 - left) to (cols - 1 + right) do
 				if result.contains((x, y)) then
 					print('O')
 				else
@@ -77,5 +82,23 @@ object Day21 extends App:
 		visualize()
 		result.size
 
+	def task2(): Long =
+		val targetI: Double = (26501365 - 65) / 131
+		val xy = (0 to 2).map(i =>
+			visit(131 * i + 65)
+			(i.toDouble, result.size.toDouble)
+		)
+		// ax^2 + bx + ć = y
+		// Solve quadratic equation coefficients (idea from Reddit thread)
+		val matrixA = DenseMatrix(
+			(xy(0)._1 * xy(0)._1, xy(0)._1, 1.0), 
+			(xy(1)._1 * xy(1)._1, xy(1)._1, 1.0), 
+			(xy(2)._1 * xy(2)._1, xy(2)._1, 1.0)
+		)
+		val matrixB = DenseVector(xy(0)._2, xy(1)._2, xy(2)._2)
+		val res = matrixA \ matrixB
+		val target = DenseVector(targetI * targetI, targetI, 1.0)
+		val t = res dot target
+		t.toLong
 
-	println(task1())
+	println(task2())
